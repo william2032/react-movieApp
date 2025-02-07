@@ -5,6 +5,8 @@ import MovieCard from "./MovieCard.jsx";
 import {useDebounce} from 'react-use'
 
 import {getTrendingMovies, updateSearchCount} from "./Appwrite.js";
+import {left_arrow, right_arrow} from "../assets/index.js";
+
 
 
 const API_BASE_URL = " https://api.themoviedb.org/3";
@@ -28,6 +30,11 @@ const Hero = () => {
     const [movieList, setMovieList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [trendingMovies, setTrendingMovies] = useState([]);
+    const [showAll, setShowAll] = useState(false);
+
+    const HandleToggle = () => {
+        setShowAll(!showAll);
+    }
 
     // Debounce the search term to prevent making too many API requests
     // by waiting for the user to stop typing for 500ms
@@ -88,6 +95,12 @@ const Hero = () => {
     useEffect(() => {
         loadTrendingMovies();
     }, [])
+
+    useEffect(() => {
+        HandleToggle(showAll);
+    }, []);
+
+
     return (
         <main>
             <div className="pattern overflow-x-hidden scroll-smooth">
@@ -105,8 +118,8 @@ const Hero = () => {
 
                             <ul>
                                 {trendingMovies.map((movie, index) => (
-                                    <li key={movie.$id }>
-                                        <p className=" px-[25px] space-x-2" > {index + 1}</p>
+                                    <li key={movie.$id}>
+                                        <p className=" px-[25px] space-x-2"> {index + 1}</p>
                                         <img src={movie.poster_url} alt={movie.title}/>
                                     </li>
                                 ))}
@@ -123,12 +136,15 @@ const Hero = () => {
                             <p className="text-white"> {errorMessage}</p>
                         ) : (
                             <ul>
-                                {movieList.map((movie) => (
+                                {movieList.slice(0, showAll? movieList.length:8).map((movie) => (
                                     <MovieCard key={movie.id} movie={movie}/>
                                 ))}
                             </ul>
                         )}
-
+                        <div  onClick={HandleToggle} className="flex text-center text-2xl cursor-pointer">
+                            <p className='font-medium text-white flex  justify-center'>{showAll ? 'Previous' : 'Next'}</p>
+                            <img src={showAll ? left_arrow : right_arrow} alt="move arrow " className='h-[30px] space-x-2 mx-4 bg-white' />
+                        </div>
                     </section>
 
                 </div>
