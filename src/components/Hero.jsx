@@ -105,7 +105,9 @@ const Hero = () => {
         <main>
             <div className="pattern overflow-x-hidden scroll-smooth">
                 <div className="wrapper">
+                    <img src="/hero-bg.png" alt="hero" className="w-screen h-[500px] bg-center bg-cover absolute z-0" />
                     <header>
+
                         <img src="/hero.png" alt="logo"/>
                         <h1>Find <span className="text-gradient">Movies</span> You'll Enjoy Without the Hassle</h1>
                         <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
